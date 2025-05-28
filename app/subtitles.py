@@ -5,7 +5,8 @@ from app.whisper_model import model
 from app.utils import UPLOAD_FOLDER
 
 def extract_subtitles(video_file_bytes):
-    input_video_path = os.path.join(UPLOAD_FOLDER, f"uploaded_{uuid.uuid4().hex}.mp4")
+    video_file_name = f"uploaded_{uuid.uuid4().hex}.mp4"
+    input_video_path = os.path.join(UPLOAD_FOLDER, video_file_name)
     with open(input_video_path, "wb") as f:
         f.write(video_file_bytes)
 
@@ -17,7 +18,7 @@ def extract_subtitles(video_file_bytes):
     segments = split_segments_by_max_words(result["segments"], max_words=7)
 
     os.remove(temp_audio_path)
-    return input_video_path, segments
+    return input_video_path, segments, video_file_name
 
 def split_segments_by_max_words(segments, max_words=7):
     new_segments = []
